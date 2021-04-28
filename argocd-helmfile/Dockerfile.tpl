@@ -10,9 +10,10 @@ ARG HELMFILE_VERSION=v{{ .helmfile_version }}
 ARG HELM_VERSION=v{{ .helm_version }}
 ARG HELM_LOCATION="https://get.helm.sh"
 ARG HELM_FILENAME="helm-${HELM_VERSION}-linux-amd64.tar.gz"
-ARG KUBECTL_VERSION=1.18.10
-ARG SOPS_VERSION=3.2.0
+ARG KUBECTL_VERSION=1.17.12
+ARG SOPS_VERSION=3.7.1
 ARG HELM_DIFF_VERSION=3.1.3
+ARG HELM_SECRETS_VERSION=3.6.1
 
 # Install tools needed for your repo-server to retrieve & decrypt secrets, render manifests
 # (e.g. curl, awscli, gpg, sops)
@@ -43,7 +44,7 @@ RUN apt-get update && \
 USER argocd
 
 RUN helm plugin install https://github.com/databus23/helm-diff --version v${HELM_DIFF_VERSION} && \
-    helm plugin install https://github.com/futuresimple/helm-secrets && \
+    helm plugin install https://github.com/jkroepke/helm-secrets --version v${HELM_SECRETS_VERSION} && \
     helm plugin install https://github.com/hypnoglow/helm-s3.git && \
     helm plugin install https://github.com/mumoshu/helm-x  && \
     helm plugin install https://github.com/aslafy-z/helm-git.git
