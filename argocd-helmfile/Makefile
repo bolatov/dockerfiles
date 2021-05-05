@@ -1,14 +1,14 @@
 .PHONY: build
 build:
-	docker build --no-cache -t chatwork/`basename $$PWD` .;
-	@version=$$(docker inspect -f {{.Config.Labels.version}} chatwork/`basename $$PWD`); \
+	docker build --no-cache -t bolatov/`basename $$PWD` .;
+	@version=$$(docker inspect -f {{.Config.Labels.version}} bolatov/`basename $$PWD`); \
 		if [ -n "$$version" ]; then \
-			docker tag chatwork/`basename $$PWD`:latest chatwork/`basename $$PWD`:$$version; \
+			docker tag bolatov/`basename $$PWD`:latest bolatov/`basename $$PWD`:$$version; \
 		fi
 
 .PHONY: check
 check:
-	@version=$$(docker inspect -f {{.Config.Labels.version}} chatwork/`basename $$PWD`); \
+	@version=$$(docker inspect -f {{.Config.Labels.version}} bolatov/`basename $$PWD`); \
 		if [ -z "$$version" ]; then \
 			echo "\033[91mError: version is not defined in Dockerfile.\033[0m"; \
 			exit 1; \
@@ -23,9 +23,9 @@ test:
 
 .PHONY: push
 push:
-	@version=$$(docker inspect -f {{.Config.Labels.version}} chatwork/`basename $$PWD`:latest); \
-		if docker inspect --format='{{index .RepoDigests 0}}' chatwork/$$(basename $$PWD):$$version >/dev/null 2>&1; then \
+	@version=$$(docker inspect -f {{.Config.Labels.version}} bolatov/`basename $$PWD`:latest); \
+		if docker inspect --format='{{index .RepoDigests 0}}' bolatov/$$(basename $$PWD):$$version >/dev/null 2>&1; then \
 			echo "no changes"; \
 		else \
-			docker push chatwork/`basename $$PWD`; \
+			docker push bolatov/`basename $$PWD`; \
 		fi
